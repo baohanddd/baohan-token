@@ -1,8 +1,8 @@
 {
-    "name": “baohan/token",
+    "name": "baohan/token",
     "autoload": {
         "psr-4": {
-            “baohan\\token\\": "src/"
+            "baohan\\token\\": "src/"
         }
     }
 }
