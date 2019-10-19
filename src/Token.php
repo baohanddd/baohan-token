@@ -1,64 +1,102 @@
 <?php
 namespace baohan\token;
 
-use baohan\token\Payload\AnonymousPayload;
+use baohan\token\Token\Expire;
 
-class Token
+class Token implements \Serializable, \JsonSerializable
 {
     /**
-     * @var \Redis
+     * @var Expire
      */
-    protected $redis;
+    protected $expire;
 
-    public function __construct(\Redis $redis)
+    /**
+     * @var Role
+     */
+    protected $role;
+
+    /**
+     * @var Crypto
+     */
+    protected $crypto;
+
+    public function __construct(Crypto $crypto)
     {
-        $this->redis = $redis;
+        $this->crypto = $crypto;
+        $this->expire = new Expire();
+    }
+
+    public function setRole(Role $role)
+    {
+        $this->role = $role;
+    }
+
+    public function setExpire(int $timestamp)
+    {
+        $this->expire->unserialize($timestamp);
     }
 
     /**
-     * @param $token
-     * @return Payload
+     * @return mixed|string
+     * @throws \Exception
      */
-    public function get($token)
+    public function jsonSerialize()
     {
-        $value = $this->redis->get($token);
-        if ($value) {
-            $payload = Payload::unserialize($value);
-            return $payload;
-        }
-        return new AnonymousPayload();
+        return $this->serialize();
     }
 
     /**
-     * @param $token
-     * @return bool
+     * @return string
+     * @throws \Exception
      */
-    public function is($token): bool
+    public function serialize()
     {
-        $payload = $this->get($token);
-        if (!$payload) {
-            return false;
-        }
-        return $payload->getRole() === 'admin';
+        return $this->crypto->encrypt($this->toJson());
     }
 
     /**
-     * @param $token
-     * @param Payload $payload
-     * @return Payload
+     * @param string $authorization
+     * @throws \Exception
      */
-    public function save($token, Payload $payload)
+    public function unserialize($authorization)
     {
-        $this->redis->set($token, $payload->serialize());
-        $this->redis->expire($token, $payload->getTTL());
-        return $payload;
+        $item = json_decode($this->crypto->decrypt($authorization));
+        $this->expire->unserialize($item->expire);
+        $this->role->unserialize($item->role);
     }
 
     /**
-     * @param $token
+     * @return Expire
      */
-    public function remove($token)
+    public function getExpire(): Expire
     {
-        $this->redis->delete($token);
+        return $this->expire;
+    }
+
+    /**
+     * @return Role
+     */
+    public function getRole(): Role
+    {
+        return $this->role;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'expire'  => $this->expire->serialize(),
+            'role'    => $this->role,
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function toJson()
+    {
+        return json_encode($this->toArray());
     }
 }

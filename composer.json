@@ -1,5 +1,17 @@
 {
     "name": "baohan/token",
+    "description": "A password hash token",
+    "require": {
+        "php": ">=7.2.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+        "name": "baohan",
+        "email": "baohanddd@gmail.com",
+        "homepage": "https://twitter.com/baohanddd"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "baohan\\token\\": "src/"

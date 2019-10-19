@@ -64,7 +64,7 @@ class Payload
     public function toArray(): array
     {
         return [
-            'role' => $this->role,
+            'role'   => $this->role,
             'expire' => $this->expire
         ];
     }
