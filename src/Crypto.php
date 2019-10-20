@@ -16,7 +16,7 @@ class Crypto
      * 私钥
      * @var string
      */
-    protected $pk = "i7p0TdjdOxAfl3mtrk9k99HCauZWyW4YDZ6ZEKb0ApCyLKxmiIGOBTzEirXn";
+    protected $pk = "i7p0TdjdOxAfl3mtrk9k99HCauZWyW4Y";
 
     public function __construct($pk = "")
     {

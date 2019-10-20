@@ -2,7 +2,7 @@
 namespace baohan\token;
 
 
-class Role implements \Serializable
+class Role
 {
     protected $title;
 
@@ -31,31 +31,5 @@ class Role implements \Serializable
             if ($supervisor->match($role)) return true;
         }
         return false;
-    }
-
-    /**
-     * @return string
-     */
-    public function serialize()
-    {
-        return serialize($this->toArray());
-    }
-
-    /**
-     * @param string $serialized
-     */
-    public function unserialize($serialized)
-    {
-        $assoc = unserialize($serialized);
-        $this->title = $assoc['title'];
-        $this->supervisors = $assoc['supervisors'];
-    }
-
-    public function toArray()
-    {
-        return [
-            'title'       => $this->title,
-            'supervisors' => $this->supervisors
-        ];
     }
 }

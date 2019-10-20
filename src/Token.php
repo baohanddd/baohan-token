@@ -19,7 +19,7 @@ class Token implements \Serializable, \JsonSerializable
     /**
      * @var Crypto
      */
-    protected $crypto;
+    private $crypto;
 
     public function __construct(Crypto $crypto)
     {
@@ -34,7 +34,7 @@ class Token implements \Serializable, \JsonSerializable
 
     public function setExpire(int $timestamp)
     {
-        $this->expire->unserialize($timestamp);
+        $this->expire->setTimestamp($timestamp);
     }
 
     /**
@@ -61,7 +61,12 @@ class Token implements \Serializable, \JsonSerializable
      */
     public function serialize(): string
     {
-        return $this->crypto->encrypt($this->toJson());
+        try {
+            return $this->crypto->encrypt($this->toSerialize());
+        } catch (\Exception $e) {
+            var_dump($e);
+            return "";
+        }
     }
 
     /**
@@ -70,9 +75,9 @@ class Token implements \Serializable, \JsonSerializable
      */
     public function unserialize($authorization)
     {
-        $item = json_decode($this->crypto->decrypt($authorization));
-        $this->expire->unserialize($item->expire);
-        $this->role->unserialize($item->role);
+        $item = unserialize($this->crypto->decrypt($authorization));
+        $this->expire = $item['expire'];
+        $this->role = $item['role'];
     }
 
     /**
@@ -97,7 +102,7 @@ class Token implements \Serializable, \JsonSerializable
     public function toArray()
     {
         return [
-            'expire'  => $this->expire->serialize(),
+            'expire'  => $this->expire,
             'role'    => $this->role,
         ];
     }
@@ -105,8 +110,8 @@ class Token implements \Serializable, \JsonSerializable
     /**
      * @return string
      */
-    public function toJson()
+    public function toSerialize()
     {
-        return json_encode($this->toArray());
+        return serialize($this->toArray());
     }
 }

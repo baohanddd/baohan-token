@@ -1,26 +1,12 @@
 <?php
 namespace baohan\token\Token;
 
-class Expire implements \Serializable
+class Expire
 {
     /**
      * @var int
      */
     protected $timestamp = 0;
-
-    public function __construct()
-    {
-    }
-
-    public function serialize()
-    {
-        return $this->timestamp;
-    }
-
-    public function unserialize($expire)
-    {
-        $this->timestamp = intval($expire);
-    }
 
     /**
      * @return bool
@@ -28,5 +14,10 @@ class Expire implements \Serializable
     public function isAlive(): bool
     {
         return $this->timestamp > time();
+    }
+
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
     }
 }
