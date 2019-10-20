@@ -26,8 +26,8 @@ class Permission
     /**
      * @return bool
      */
-    public function expire()
+    public function alive()
     {
-        return $this->token->getExpire()->isExpire();
+        return $this->token->getExpire()->isAlive();
     }
 }

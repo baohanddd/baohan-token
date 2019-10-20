@@ -1,4 +1,5 @@
 <?php
+use Phalcon\Mvc\Router;
 
 $roles = [
     'admin' => new \baohan\token\Role('admin'),
@@ -22,6 +23,30 @@ if ($authorization) {
 }
 
 $permission = new \baohan\token\Permission($token);
-$permission->is($roles['admin']) === true; // false
-$permission->expire() === true;            // false
+$permission->is($roles['admin']) === true; // boolean
+$permission->alive() === true;             // boolean
 
+// --------------------------------------------------------------
+
+
+
+// --------------------------------------------------------------
+# integrated with phalcon router
+# initial token
+$token = new \baohan\token\Token(
+    new \baohan\token\Crypto()
+);
+
+$router = new Router();
+$route = $router->add('/login');
+$route->beforeMatch(function($uri, $route) use ($di) {
+    $role = $di->get('roles')->get('admin');
+    $token = $di->get('token');
+    $request = $di->get('request');
+    $authorization = $request->getHeader('Authorization');
+    if(!$authorization) {
+        $token->unserialize($authorization);
+    }
+    $permission = new \baohan\token\Permission($token);
+    return $permission->alive() && $permission->is($role);
+});

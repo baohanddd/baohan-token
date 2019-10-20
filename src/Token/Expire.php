@@ -25,8 +25,8 @@ class Expire implements \Serializable
     /**
      * @return bool
      */
-    public function isExpire(): bool
+    public function isAlive(): bool
     {
-        return $this->timestamp < time();
+        return $this->timestamp > time();
     }
 }

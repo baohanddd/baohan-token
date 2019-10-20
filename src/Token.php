@@ -1,6 +1,7 @@
 <?php
 namespace baohan\token;
 
+use baohan\token\Exception\HeaderWriteException;
 use baohan\token\Token\Expire;
 
 class Token implements \Serializable, \JsonSerializable
@@ -49,7 +50,16 @@ class Token implements \Serializable, \JsonSerializable
      * @return string
      * @throws \Exception
      */
-    public function serialize()
+    public function __toString()
+    {
+        return $this->serialize();
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function serialize(): string
     {
         return $this->crypto->encrypt($this->toJson());
     }
