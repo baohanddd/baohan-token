@@ -27,7 +27,7 @@ class Role
     public function match(Role $role): bool
     {
         if ($this->title === $role->title) return true;
-        foreach($this->supervisors as $supervisor) {
+        foreach($role->supervisors as $supervisor) {
             if ($supervisor->match($role)) return true;
         }
         return false;
