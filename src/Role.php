@@ -41,7 +41,7 @@ class Role
     {
         if ($this->title === $role->title) return true;
         foreach($role->supervisors as $supervisor) {
-            if ($supervisor->match($role)) return true;
+            if ($supervisor->match($this)) return true;
         }
         return false;
     }
@@ -53,5 +53,13 @@ class Role
     public function self(string $identity): bool
     {
         return $this->identity === $identity;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentity(): string
+    {
+        return $this->identity;
     }
 }
