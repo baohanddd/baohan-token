@@ -4,7 +4,15 @@ namespace baohan\token;
 
 class Role
 {
-    protected $title;
+    /**
+     * @var string
+     */
+    protected $title = "";
+
+    /**
+     * @var string
+     */
+    protected $identity = "";
 
     /**
      * @var Role[]
@@ -31,5 +39,14 @@ class Role
             if ($supervisor->match($role)) return true;
         }
         return false;
+    }
+
+    /**
+     * @param string $identity
+     * @return bool
+     */
+    public function self(string $identity): bool
+    {
+        return $this->identity === $identity;
     }
 }
