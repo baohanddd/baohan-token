@@ -27,6 +27,11 @@ class Role
         }
     }
 
+    public function setIdentity(string $identity)
+    {
+        $this->identity = $identity;
+    }
+
     public function addSupervisor(Role $role)
     {
         $this->supervisors[] = $role;
