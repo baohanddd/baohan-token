@@ -38,6 +38,14 @@ class Token implements \Serializable, \JsonSerializable
     }
 
     /**
+     * @param Crypto $crypto
+     */
+    public function setCrypto(Crypto $crypto)
+    {
+        $this->crypto = $crypto;
+    }
+
+    /**
      * @return mixed|string
      * @throws \Exception
      */
