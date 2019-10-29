@@ -1,7 +1,7 @@
 <?php
 namespace baohan\token\Token;
 
-class Expire
+class Expire implements \JsonSerializable
 {
     /**
      * @var int
@@ -19,5 +19,10 @@ class Expire
     public function setTimestamp($timestamp)
     {
         $this->timestamp = $timestamp;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->timestamp;
     }
 }
