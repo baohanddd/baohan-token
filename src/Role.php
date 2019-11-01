@@ -27,6 +27,14 @@ class Role
         }
     }
 
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
     public function setIdentity(string $identity)
     {
         $this->identity = $identity;

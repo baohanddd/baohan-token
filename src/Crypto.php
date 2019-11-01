@@ -3,7 +3,6 @@ namespace baohan\token;
 
 use baohan\token\Crypto\Exception\DecryptFailure;
 use baohan\token\Crypto\Exception\IncompleteCode;
-use Phalcon\Di;
 
 /**
  * 加密解密
