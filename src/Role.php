@@ -49,7 +49,7 @@ class Role
     {
         if ($this->title === $role->title) return true;
         foreach($role->supervisors as $supervisor) {
-            if ($supervisor->match($this)) return true;
+            if ($this->match($supervisor)) return true;
         }
         return false;
     }
